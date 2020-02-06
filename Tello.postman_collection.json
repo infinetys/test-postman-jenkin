@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "366b2453-6048-4d44-b67a-04215008397d",
+		"name": "Tello",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New API Create Board & Random name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "99a321d6-f34f-4b8d-b5ed-d8ff3ea4139e",
+						"exec": [
+							"// pm.test(\"comment should be member\", function() {",
+							"    ",
+							"//   pm.test(commentStatus) == \"members\"",
+							"    ",
+							"// });",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var response = pm.response.json();",
+							"",
+							"console.log(response.prefs)",
+							"",
+							"pm.test(\"Board should be created\", function () {",
+							"    ",
+							"    pm.expect(response.name).to.eql(pm.environment.get(\"boardname\"));",
+							"    pm.expect(response.closed).to.eql(false);",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Board should be private\", function () {",
+							"",
+							"    pm.expect(response.prefs.permissionLevel).to.eql(\"private\");",
+							"    ",
+							"});",
+							"",
+							"pm.globals.set(\"boardid\", response.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "946e7d9e-742b-4665-b5ad-a61f642d5850",
+						"exec": [
+							"  ",
+							"",
+							"pm.environment.set(\"boardname\", getRandomBoardName());",
+							"",
+							"function getRandomBoardName() {",
+							"    ",
+							"    const boardname = \"My Board name  \" + parseInt(Math.random() * 10000);",
+							"    console.log(boardname);",
+							"    return boardname;",
+							"    ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards?name={{boardname}}&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardname}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3b80cd94-79b0-4a85-b44a-a3030ff859da",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(\"TODO\");",
+							"    pm.expect(jsonData.closed).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.idBoard).to.eql(pm.globals.get(\"boardid\"));",
+							"",
+							"});",
+							"",
+							"pm.globals.unset(\"boardid\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/list?name=TODO&idBoard={{boardid}}&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"list"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "TODO"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{boardid}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Enviroment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03af2599-8684-4b1a-9bae-f061952c5980",
+						"exec": [
+							"pm.environment.set(\"mynewvar\", \"1\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "example.com",
+					"host": [
+						"example",
+						"com"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

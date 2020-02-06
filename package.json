@@ -1,0 +1,22 @@
+{
+  "name": "jenkins",
+  "version": "1.0.0",
+  "description": "Project for Auto Script Postman",
+  "main": "index.js",
+  "scripts": {
+    "api-test-now": "newman run Tello.postman_collection.json -e production.postman_environment.json -r htmlextra,html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/infinetys/test-jenkin-2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/infinetys/test-jenkin-2/issues"
+  },
+  "homepage": "https://github.com/infinetys/test-jenkin-2#readme",
+  "dependencies": {
+    "newman": "^4.5.7"
+  }
+}
